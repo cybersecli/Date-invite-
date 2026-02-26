@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>For Léna Grondin</title>
+  <style>
+    :root{
+      --bg1:#0f0f14;
+      --bg2:#232338;
+      --paper:#fbf7f1;
+      --ink:#222;
+      --muted:#5a5a5a;
+      --env:#e7dfd2;
+      --env2:#ded4c6;
+      --seal:#b52a3a;
+      --shadow: rgba(0,0,0,.35);
+      --border: rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      background:
+        radial-gradient(1000px 700px at 20% 10%, #2f2f55 0%, transparent 55%),
+        radial-gradient(900px 600px at 90% 30%, #4a2a48 0%, transparent 55%),
+        linear-gradient(to bottom, var(--bg1), var(--bg2));
+      font-family: ui-serif, Georgia, "Times New Roman", serif;
+    }
+
+    .stage{ width:min(820px, 100%); display:grid; place-items:center; gap:14px; }
+    .hint{
+      color: rgba(255,255,255,.82);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-size: 14px;
+      letter-spacing: .2px;
+      text-align:center;
+      user-select:none;
+    }
+
+    .envelope-wrap{
+      width:min(700px, 100%);
+      position:relative;
+      height: 420px;
+      display:grid;
+      place-items:center;
+      filter: drop-shadow(0 24px 55px var(--shadow));
+    }
+
+    .card{
+      position:absolute;
+      width:min(560px, 92%);
+      height: 320px;
+      background: var(--paper);
+      border-radius: 18px;
+      border:1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0,0,0,.12);
+      transform: translateY(70px);
+      transition: transform 900ms cubic-bezier(.2,.9,.2,1);
+      overflow:hidden;
+    }
+
+    .card-inner{
+      position:relative;
+      padding:28px 30px;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .card-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
+    }
+
+    .to{
+      font-size:18px;
+      color: var(--muted);
+      margin:0;
+    }
+
+    .title{
+      margin:10px 0 0;
+      font-size:34px;
+      letter-spacing:.2px;
+      color: var(--ink);
+      line-height:1.05;
+    }
+
+    .date{
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-size:13px;
+      letter-spacing:.3px;
+      text-transform:uppercase;
+      color:#333;
+      background: rgba(0,0,0,.04);
+      border:1px solid rgba(0,0,0,.06);
+      padding:8px 10px;
+      border-radius:999px;
+      white-space:nowrap;
+    }
+
+    .details{
+      margin-top:14px;
+      color:#2b2b2b;
+      font-size:16px;
+      line-height:1.7;
+    }
+
+    .line{
+      height:1px;
+      background: rgba(0,0,0,.10);
+      margin:14px 0;
+    }
+
+    .footer{
+      font-size:14px;
+      color:#333;
+      margin-top:10px;
+    }
+
+    .sig{
+      font-style:italic;
+      margin-top:10px;
+    }
+
+    .envelope{
+      position:absolute;
+      width:min(640px, 96%);
+      height: 340px;
+      background: linear-gradient(180deg, var(--env), var(--env2));
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.12);
+      overflow:hidden;
+    }
+
+    .pocket{
+      position:absolute;
+      inset:auto 0 0 0;
+      height: 72%;
+      background: linear-gradient(180deg, rgba(0,0,0,.02), rgba(0,0,0,.06));
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+
+    .flap{
+      position:absolute;
+      inset:0 0 auto 0;
+      height: 64%;
+      background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(0,0,0,.02));
+      transform-origin: top center;
+      transform: rotateX(0deg);
+      transition: transform 850ms cubic-bezier(.2,.9,.2,1);
+      clip-path: polygon(0 0, 100% 0, 50% 82%);
+      border-bottom: 1px solid rgba(0,0,0,.04);
+    }
+
+    .seal{
+      position:absolute;
+      left:50%;
+      top: 58%;
+      transform: translate(-50%, -50%);
+      width: 64px;
+      height: 64px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.35), rgba(255,255,255,0) 55%),
+                  linear-gradient(180deg, #c73445, #911a26);
+      box-shadow: 0 14px 30px rgba(0,0,0,.22);
+      border: 1px solid rgba(255,255,255,.18);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      user-select:none;
+      transition: transform 200ms ease;
+      z-index:6;
+    }
+
+    .seal span{
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-size: 12px;
+      letter-spacing:.25px;
+      color: rgba(255,255,255,.92);
+      text-transform: uppercase;
+    }
+
+    .open .flap{ transform: rotateX(165deg); }
+    .open .card{ transform: translateY(-58px); }
+
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="hint">Tap the wax seal to open your invitation</div>
+
+    <div class="envelope-wrap" id="wrap">
+      <div class="card">
+        <div class="card-inner">
+          <div>
+            <div class="card-top">
+              <div>
+                <p class="to">To: <b>Léna Grondin</b></p>
+                <h1 class="title">Cozy Date Night</h1>
+              </div>
+              <div class="date">Friday, February 27th, 2026</div>
+            </div>
+
+            <div class="details">
+              A quiet, intentional evening at home.<br>
+              Painted canvases, a puzzle, and a card game.<br>
+              <div class="line"></div>
+              Cocktails: Parisian Daiquiris<br>
+              Dinner: Creamy garlic chicken over mashed potatoes<br>
+              Side: Lemon garlic green beans<br><br>
+              Dress code: Comfy cute.
+            </div>
+          </div>
+
+          <div class="footer">
+            There will be music, candlelight, and just enough competition to keep things interesting.
+            The only thing missing is you.
+            <div class="sig">Aaliyah</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="envelope">
+        <div class="flap"></div>
+        <div class="pocket"></div>
+      </div>
+
+      <div class="seal" id="seal" role="button" tabindex="0">
+        <span>Open</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const wrap = document.getElementById('wrap');
+    const seal = document.getElementById('seal');
+
+    function toggleOpen(){
+      wrap.classList.toggle('open');
+      const isOpen = wrap.classList.contains('open');
+      seal.querySelector('span').textContent = isOpen ? 'Close' : 'Open';
+    }
+
+    seal.addEventListener('click', toggleOpen);
+    seal.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleOpen();
+      }
+    });
+  </script>
+</body>
+</html>
