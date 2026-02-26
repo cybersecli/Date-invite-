@@ -3,297 +3,209 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>For Léna Grondin</title>
+  <title>Date Night Invite</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg1:#0f0f14;
-      --bg2:#232338;
-
+      --bg:#000;
       --paper:#fbf7f1;
-      --ink:#222;
-      --muted:#5a5a5a;
-
-      --env:#e7dfd2;
-      --env2:#ded4c6;
-
-      --seal1:#c73445;
-      --seal2:#911a26;
-
-      --shadow: rgba(0,0,0,.38);
-      --border: rgba(0,0,0,.10);
+      --ink:#1f1f1f;
+      --muted:#4f4f4f;
+      --gold1:#d6b35a;
+      --gold2:#b78a2a;
+      --shadow:rgba(0,0,0,.55);
+      --radius:18px;
     }
 
-    *{ box-sizing:border-box; }
+    *{box-sizing:border-box}
 
     body{
       margin:0;
       min-height:100vh;
       display:grid;
       place-items:center;
-      padding:18px;
-      background:
-        radial-gradient(900px 650px at 20% 10%, #2f2f55 0%, transparent 58%),
-        radial-gradient(850px 600px at 90% 30%, #4a2a48 0%, transparent 58%),
-        linear-gradient(to bottom, var(--bg1), var(--bg2));
-      font-family: ui-serif, Georgia, "Times New Roman", serif;
+      padding:24px;
+      background:var(--bg);
+      font-family:"Cormorant Garamond", Georgia, serif;
     }
 
-    .stage{
-      width:min(520px, 100%);
+    .wrap{
+      width:min(420px,100%);
       display:grid;
+      gap:14px;
       place-items:center;
-      gap:12px;
     }
 
     .hint{
-      color: rgba(255,255,255,.86);
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      font-size:14px;
+      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      font-size:13px;
       letter-spacing:.2px;
+      color:rgba(255,255,255,.82);
       text-align:center;
-      user-select:none;
-      padding: 0 8px;
     }
 
-    /* Mobile-first scene */
-    .scene{
+    .stage{
       width:100%;
-      height: 520px;
-      position:relative;
+      height:560px;
+      perspective:1200px;
       display:grid;
       place-items:center;
-      perspective: 1200px;
-      filter: drop-shadow(0 22px 48px var(--shadow));
     }
 
-    /* Invitation card */
     .card{
-      position:absolute;
-      width: min(480px, 92%);
-      height: 360px;
-      background: var(--paper);
-      border:1px solid var(--border);
-      border-radius: 18px;
-      box-shadow: 0 12px 30px rgba(0,0,0,.15);
-      overflow:hidden;
-
-      /* tucked inside */
-      transform: translateY(120px);
-      transition:
-        transform 1050ms cubic-bezier(.18,.9,.2,1),
-        box-shadow 1050ms cubic-bezier(.18,.9,.2,1);
-      z-index: 2;
+      width:100%;
+      height:100%;
+      position:relative;
+      transform-style:preserve-3d;
+      transition:transform 900ms cubic-bezier(.2,.9,.2,1);
+      border-radius:var(--radius);
+      cursor:pointer;
+      -webkit-tap-highlight-color:transparent;
+      filter:drop-shadow(0 28px 60px var(--shadow));
     }
 
-    .card::before{
-      content:"";
+    .card.is-flipped{
+      transform:rotateY(180deg);
+    }
+
+    .face{
       position:absolute;
       inset:0;
+      backface-visibility:hidden;
+      border-radius:var(--radius);
+      background:var(--paper);
+      color:var(--ink);
+      overflow:hidden;
+      border:2px solid transparent;
       background:
-        radial-gradient(620px 260px at 18% 0%, rgba(181,42,58,.10), transparent 60%),
-        radial-gradient(520px 240px at 92% 18%, rgba(47,47,85,.08), transparent 60%);
-      pointer-events:none;
+        linear-gradient(var(--paper),var(--paper)) padding-box,
+        linear-gradient(135deg,var(--gold1),var(--gold2),var(--gold1)) border-box;
     }
 
-    .card-inner{
-      position:relative;
-      height:100%;
-      padding:26px 24px;
+    .front{
+      display:grid;
+      place-items:center;
+      padding:30px;
+      text-align:center;
+    }
+
+    .script{
+      font-family:"Great Vibes",cursive;
+      font-size:54px;
+      margin:0;
+    }
+
+    .sub{
+      margin-top:14px;
+      font-size:16px;
+      color:rgba(0,0,0,.65);
+    }
+
+    .line{
+      width:62%;
+      height:1px;
+      background:rgba(183,138,42,.45);
+      margin:18px auto 0;
+    }
+
+    .back{
+      transform:rotateY(180deg);
+      padding:28px 24px;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
-      gap:10px;
     }
 
-    .card-top{
+    .toprow{
       display:flex;
-      align-items:flex-start;
       justify-content:space-between;
       gap:12px;
     }
 
     .to{
       margin:0;
-      font-size:17px;
-      color: var(--muted);
-    }
-
-    .title{
-      margin:10px 0 0;
-      font-size:32px;
-      letter-spacing:.2px;
-      color: var(--ink);
-      line-height:1.08;
+      font-size:18px;
+      color:var(--muted);
     }
 
     .date{
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;
       font-size:12px;
-      letter-spacing:.35px;
       text-transform:uppercase;
-      color:#333;
-      background: rgba(0,0,0,.045);
-      border:1px solid rgba(0,0,0,.06);
+      letter-spacing:.35px;
+      background:rgba(0,0,0,.04);
       padding:8px 10px;
       border-radius:999px;
-      white-space:nowrap;
-      height: fit-content;
+    }
+
+    .title{
+      margin:10px 0 8px;
+      font-size:30px;
+      font-weight:600;
     }
 
     .details{
-      margin-top:12px;
-      color:#2b2b2b;
-      font-size:16px;
+      font-size:17px;
       line-height:1.8;
+      margin-top:8px;
     }
 
-    .line{
+    .divider{
       height:1px;
-      background: rgba(0,0,0,.12);
+      background:rgba(0,0,0,.12);
       margin:14px 0;
     }
 
-    .footer{
-      color:#333;
-      font-size:14px;
-      line-height:1.55;
+    .closing{
+      font-size:15px;
+      line-height:1.6;
     }
 
     .sig{
       margin-top:10px;
       font-style:italic;
-      color:#222;
+      font-size:16px;
     }
 
-    /* Envelope */
-    .envelope{
-      position:absolute;
-      width: min(520px, 96%);
-      height: 310px;
-      border-radius: 18px;
-      background: linear-gradient(180deg, var(--env), var(--env2));
-      border:1px solid rgba(255,255,255,.14);
-      overflow:hidden;
-      z-index: 3;
-    }
-
-    .flap{
-      position:absolute;
-      inset:0 0 auto 0;
-      height: 64%;
-      background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(0,0,0,.04));
-      transform-origin: top center;
-      transform: rotateX(0deg);
-      transition: transform 900ms cubic-bezier(.18,.9,.2,1);
-      clip-path: polygon(0 0, 100% 0, 50% 82%);
-      border-bottom: 1px solid rgba(0,0,0,.05);
-      z-index: 5;
-    }
-
-    /* Pocket stays in front */
-    .pocket{
-      position:absolute;
-      inset:auto 0 0 0;
-      height: 74%;
-      background: linear-gradient(180deg, rgba(0,0,0,.02), rgba(0,0,0,.08));
-      z-index: 7;
-    }
-    .pocket::before,
-    .pocket::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: rgba(255,255,255,.06);
-      clip-path: polygon(0 0, 50% 65%, 0 100%);
-    }
-    .pocket::after{
-      background: rgba(0,0,0,.04);
-      clip-path: polygon(100% 0, 50% 65%, 100% 100%);
-    }
-
-    /* Seal */
-    .seal{
-      position:absolute;
-      left:50%;
-      top: 60%;
-      transform: translate(-50%, -50%);
-      width:62px;
-      height:62px;
-      border-radius:999px;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,.35), rgba(255,255,255,0) 55%),
-        linear-gradient(180deg, var(--seal1), var(--seal2));
-      box-shadow: 0 14px 28px rgba(0,0,0,.22);
-      border: 1px solid rgba(255,255,255,.18);
-      display:grid;
-      place-items:center;
-      cursor:pointer;
-      user-select:none;
-      z-index: 9;
-      transition: transform 160ms ease, opacity 260ms ease;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .seal:active{ transform: translate(-50%, -50%) scale(.98); }
-    .seal span{
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      font-size: 12px;
-      letter-spacing:.25px;
-      color: rgba(255,255,255,.94);
-      text-transform: uppercase;
-    }
-
-    /* Open animation */
-    .open .flap{
-      transform: rotateX(165deg);
-    }
-    .open .card{
-      transform: translateY(-92px);
-      box-shadow: 0 20px 48px rgba(0,0,0,.22);
-      z-index: 10; /* above envelope when out */
-      transition-delay: 160ms; /* flap first, then slide */
-    }
-    .open .seal{
-      opacity:0;
-      pointer-events:none;
-    }
-
-    /* Larger phones / small tablets */
-    @media (min-width: 700px){
-      .scene{ height: 560px; }
-      .card{ height: 340px; transform: translateY(110px); }
-      .open .card{ transform: translateY(-78px); }
-      .envelope{ height: 320px; }
-    }
-
-    /* Reduce motion if user prefers */
-    @media (prefers-reduced-motion: reduce){
-      .card, .flap{ transition:none; }
-      .open .card{ transform: translateY(-60px); }
+    @media (max-width:380px){
+      .stage{height:540px}
+      .script{font-size:48px}
+      .details{font-size:16px}
     }
   </style>
 </head>
 
 <body>
-  <div class="stage">
-    <div class="hint">Tap the wax seal to open your invitation</div>
+  <div class="wrap">
+    <div class="hint">Tap the card to open</div>
 
-    <div class="scene" id="scene">
-      <div class="card" aria-label="Invitation">
-        <div class="card-inner">
+    <div class="stage">
+      <div class="card" id="card" tabindex="0">
+        <div class="face front">
           <div>
-            <div class="card-top">
-              <div>
-                <p class="to">To: <b>Léna Grondin</b></p>
-                <h1 class="title">Cozy Date Night</h1>
-              </div>
+            <h1 class="script">Date Night Invite</h1>
+            <div class="line"></div>
+            <div class="sub">Tap to open</div>
+          </div>
+        </div>
+
+        <div class="face back">
+          <div>
+            <div class="toprow">
+              <p class="to">To: <b>Léna Grondin</b></p>
               <div class="date">Friday, February 27th, 2026</div>
             </div>
 
+            <div class="title">Cozy Date Night</div>
+
             <div class="details">
               A quiet, intentional evening at home.<br>
-              Painted canvases, a puzzle, and a card game.<br>
-              <div class="line"></div>
+              Painted canvases, a puzzle, and a card game.
+              <div class="divider"></div>
               Cocktails: Parisian Daiquiris<br>
               Dinner: Creamy garlic chicken over mashed potatoes<br>
               Side: Lemon garlic green beans<br><br>
@@ -301,37 +213,29 @@
             </div>
           </div>
 
-          <div class="footer">
+          <div class="closing">
             There will be music, candlelight, and just enough competition to keep things interesting.
             The only thing missing is you.
             <div class="sig">Aaliyah</div>
           </div>
         </div>
       </div>
-
-      <div class="envelope" aria-hidden="true">
-        <div class="flap"></div>
-        <div class="pocket"></div>
-        <div class="seal" id="seal" role="button" tabindex="0" aria-label="Open invitation">
-          <span>Open</span>
-        </div>
-      </div>
     </div>
   </div>
 
   <script>
-    const scene = document.getElementById('scene');
-    const seal = document.getElementById('seal');
+    const card = document.getElementById('card');
 
-    function openInvite(){
-      scene.classList.add('open');
+    function toggleFlip(){
+      card.classList.toggle('is-flipped');
     }
 
-    seal.addEventListener('click', openInvite);
-    seal.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
+    card.addEventListener('click', toggleFlip);
+
+    card.addEventListener('keydown', (e)=>{
+      if(e.key==="Enter" || e.key===" "){
         e.preventDefault();
-        openInvite();
+        toggleFlip();
       }
     });
   </script>
