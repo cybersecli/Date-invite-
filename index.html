@@ -21,7 +21,7 @@
       --radius:18px;
     }
 
-    *{box-sizing:border-box}
+    *{ box-sizing:border-box; }
 
     body{
       margin:0;
@@ -40,18 +40,12 @@
       place-items:center;
     }
 
-    .hint{
-      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      font-size:13px;
-      letter-spacing:.2px;
-      color:rgba(255,255,255,.82);
-      text-align:center;
-    }
-
+    /* 3D flip stage */
     .stage{
       width:100%;
       height:560px;
       perspective:1200px;
+      -webkit-perspective:1200px; /* iOS */
       display:grid;
       place-items:center;
     }
@@ -60,30 +54,47 @@
       width:100%;
       height:100%;
       position:relative;
+
       transform-style:preserve-3d;
+      -webkit-transform-style:preserve-3d; /* iOS */
+
       transition:transform 900ms cubic-bezier(.2,.9,.2,1);
       border-radius:var(--radius);
       cursor:pointer;
       -webkit-tap-highlight-color:transparent;
+
       filter:drop-shadow(0 28px 60px var(--shadow));
+      /* helps Safari render layers consistently */
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
     }
 
     .card.is-flipped{
-      transform:rotateY(180deg);
+      transform: rotateY(180deg) translateZ(0);
+      -webkit-transform: rotateY(180deg) translateZ(0);
     }
 
     .face{
       position:absolute;
       inset:0;
+      width:100%;
+      height:100%;
+
       backface-visibility:hidden;
+      -webkit-backface-visibility:hidden; /* iOS */
+
       border-radius:var(--radius);
-      background:var(--paper);
-      color:var(--ink);
       overflow:hidden;
+
+      /* Gold border */
       border:2px solid transparent;
       background:
         linear-gradient(var(--paper),var(--paper)) padding-box,
         linear-gradient(135deg,var(--gold1),var(--gold2),var(--gold1)) border-box;
+
+      /* Safari sometimes needs a tiny Z offset to avoid “vanishing” */
+      transform: translateZ(1px);
+      -webkit-transform: translateZ(1px);
     }
 
     .front{
@@ -97,6 +108,15 @@
       font-family:"Great Vibes",cursive;
       font-size:54px;
       margin:0;
+      color:#151515;
+      line-height:1.05;
+    }
+
+    .line{
+      width:62%;
+      height:1px;
+      background:rgba(183,138,42,.55);
+      margin:18px auto 0;
     }
 
     .sub{
@@ -105,24 +125,23 @@
       color:rgba(0,0,0,.65);
     }
 
-    .line{
-      width:62%;
-      height:1px;
-      background:rgba(183,138,42,.45);
-      margin:18px auto 0;
-    }
-
     .back{
-      transform:rotateY(180deg);
+      /* put the back face “behind” until flipped */
+      transform: rotateY(180deg) translateZ(1px);
+      -webkit-transform: rotateY(180deg) translateZ(1px);
+
       padding:28px 24px;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
+      gap:12px;
+      color:var(--ink);
     }
 
     .toprow{
       display:flex;
       justify-content:space-between;
+      align-items:flex-start;
       gap:12px;
     }
 
@@ -138,19 +157,26 @@
       text-transform:uppercase;
       letter-spacing:.35px;
       background:rgba(0,0,0,.04);
+      border:1px solid rgba(0,0,0,.06);
       padding:8px 10px;
       border-radius:999px;
+      white-space:nowrap;
+      height:fit-content;
+      color:rgba(0,0,0,.78);
     }
 
     .title{
       margin:10px 0 8px;
       font-size:30px;
       font-weight:600;
+      letter-spacing:.2px;
+      color:rgba(0,0,0,.9);
     }
 
     .details{
       font-size:17px;
-      line-height:1.8;
+      line-height:1.85;
+      color:rgba(0,0,0,.84);
       margin-top:8px;
     }
 
@@ -162,29 +188,34 @@
 
     .closing{
       font-size:15px;
-      line-height:1.6;
+      line-height:1.65;
+      color:rgba(0,0,0,.78);
     }
 
     .sig{
       margin-top:10px;
       font-style:italic;
       font-size:16px;
+      color:rgba(0,0,0,.88);
     }
 
     @media (max-width:380px){
-      .stage{height:540px}
-      .script{font-size:48px}
-      .details{font-size:16px}
+      .stage{ height:540px; }
+      .script{ font-size:48px; }
+      .details{ font-size:16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .card{ transition:none; }
     }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <div class="hint">Tap the card to open</div>
-
     <div class="stage">
-      <div class="card" id="card" tabindex="0">
+      <div class="card" id="card" role="button" tabindex="0" aria-label="Flip invitation card">
+        <!-- FRONT -->
         <div class="face front">
           <div>
             <h1 class="script">Date Night Invite</h1>
@@ -193,6 +224,7 @@
           </div>
         </div>
 
+        <!-- BACK -->
         <div class="face back">
           <div>
             <div class="toprow">
@@ -231,9 +263,8 @@
     }
 
     card.addEventListener('click', toggleFlip);
-
-    card.addEventListener('keydown', (e)=>{
-      if(e.key==="Enter" || e.key===" "){
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         toggleFlip();
       }
